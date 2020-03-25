@@ -7,7 +7,6 @@
     <title>Add Book</title>
 </head>
 <body>
-<form method="POST">
 <nav class="navbar navbar-expand-sm bg-info navbar-dark">
   <ul class="navbar-nav">
     <li class="nav-item active">
@@ -20,11 +19,31 @@
     <a class="nav-link" href="viewall.php">View All</a>
     </li>
     <li class="nav-item active">
-    <a class="nav-link" href="login.php">Log out</a>
+    <a class="nav-link" href="logout.php">Log out</a>
     </li>
   </ul>
 </nav>
-<table class="table" >
+<div class="container">
+<div class="row">
+<div class="col col-sm-12 col-md-12 ">
+<form method="POST" enctype="multipart/form-data">
+
+<?php
+session_start();
+
+$name=$_SESSION["uname"];
+echo "Welcome ".$name;
+
+if(!isset($_SESSION['id']))
+{
+
+  echo "<script>window.location.href='login.php'</script>";
+}
+
+?>
+
+<br></br>
+<table class="table table-borderless" >
 <tr>
 <td>Name</td>
 <td><input type="text" class="form-control" name="bname"></td>
@@ -56,7 +75,11 @@
 </tr>
 <tr>
 <td>Upload Image</td>
-<td><input type="file" class="form-control" name="imag"></td>
+<td><input type="file" class="form-control" name="images"></td>
+</tr>
+<tr>
+<td>Upload File</td>
+<td><input type="file" class="form-control" name="files"></td>
 </tr>
 <tr>
 <td><button class="btn btn-primary" type="Reset" name="rbutton">Reset</button></td>
@@ -64,8 +87,7 @@
 </tr>
 </table>
 </form>
-</body>
-</html>
+
 
 <?php
 if (isset($_POST["sbutton"]))
@@ -77,7 +99,30 @@ if (isset($_POST["sbutton"]))
     $year=$_POST["yr"];
     $pg=$_POST["page"];
     $lg=$_POST["lang"];
-    $im=$_POST["imag"];
+    $target_dir="pics/";
+    $target_img=$target_dir.basename($_FILES["images"]["name"]);
+    $imageFileType=strtolower(pathinfo($target_img,PATHINFO_EXTENSION));
+
+    if(move_uploaded_file($_FILES["images"]["tmp_name"],$target_img))
+    {
+      echo "The image ".basename($_FILES["images"]["name"])." has been uploaded";
+    }
+    else
+    {
+      echo "Sorry, there was an error uploading your image";
+    }
+    $target_dir="files/";
+    $target_file=$target_dir.basename($_FILES["files"]["name"]);
+    $documentFileType=strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+    if(move_uploaded_file($_FILES["files"]["tmp_name"],$target_file))
+    {
+      echo "The file ".basename($_FILES["files"]["name"])." has been uploaded";
+    }
+    else
+    {
+      echo "Sorry, there was an error uploading your file";
+    }
 
     $sname="localhost";
     $dbun="root";
@@ -86,8 +131,8 @@ if (isset($_POST["sbutton"]))
 
     $connection=new mysqli($sname,$dbun,$dbpass,$dbn);
     
-    $sql="INSERT INTO `Book`(`name`, `author`, `publisher`, `edition`, `year`, `pages`, `language`,`img`) 
-    VALUES ('$bn','$aut','$pb',$ed,$year,$pg,'$lg','$im')";
+    $sql="INSERT INTO `Book`(`name`, `author`, `publisher`, `edition`, `year`, `pages`, `language`,`img`,`File`) 
+    VALUES ('$bn','$aut','$pb',$ed,$year,$pg,'$lg','$target_img','$target_file')";
 
     $r=$connection->query($sql);
     if($r===TRUE)
@@ -101,3 +146,8 @@ if (isset($_POST["sbutton"]))
 
     }
     ?>
+    </div>
+  </div>
+  </div>
+</body>
+</html>

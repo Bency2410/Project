@@ -20,14 +20,17 @@
     <a class="nav-link" href="viewall.php">View All</a>
     </li>
     <li class="nav-item active">
-    <a class="nav-link" href="login.php">Log out</a>
+    <a class="nav-link" href="logout.php">Log out</a>
     </li>
   </ul>
 </nav>
+  <div class="container">
 
-</body>
-</html>
+    <div class="row">
+      <div class="col col-12 col-sm-12 col-md-12 ">
 
+
+<br><br>
 
 <?php
 
@@ -44,8 +47,8 @@
     if($r->num_rows>0)
     {
       
-        echo "<table class='table' border=1>
-        <tr>
+        echo "<table class='table table-striped' border=1>
+        <tr class='table-primary'>
         <th>Name</th>
         <th>Author</th>
         <th>Publisher</th>
@@ -88,3 +91,11 @@
         echo "There are NO BOOKS!";
     }
 ?>
+
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

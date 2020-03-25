@@ -7,8 +7,11 @@
     <title>Document</title>
 </head>
 <body>
+<div class="container">
+<div class="row">
+<div class="col col-sm-12 col-md-12 ">
 <form method="POST">
-    <table class="table">
+    <table class="table table-borderless">
     <tr>
     <td>Username</td>
     <td><input type="text" class="form-control" name="uname"></td>
@@ -24,10 +27,10 @@
     </tr>
     </table>
     </form>
-</body>
-</html>
+
 
 <?php
+session_start();
 if(isset($_POST["log"]))
 {
     $un=$_POST["uname"];
@@ -40,17 +43,35 @@ if(isset($_POST["log"]))
 
     $connection=new mysqli($sname,$dbun,$dbpass,$dbn);
 
-    $sql="SELECT `username`,`password` FROM `Registration` WHERE `username`='$un' AND `password`='$pw'";
+     $sql="SELECT `username`,`password`,`id`, `name` FROM `Registration` WHERE `username`='$un' AND `password`='$pw'";
     $r=$connection->query($sql);
 
-    if($r===TRUE)
+    if($r->num_rows>0)
     {
-        header("Location: http://localhost/Project/Book.php");
-        exit;
+        while($row=$r->fetch_assoc())
+        {
+     
+         $name=$row["name"];
+         $id=$row["id"];
+
+         $_SESSION["uname"]=$name;
+         $_SESSION["id"]=$id;
+         header("Location:Book.php");
+         exit;
+
+        }
+
+
+      
     }
     else
     {
-        echo "Invalid username and password";
+        echo "<script> alert('Invalid username and password')  </script>";
     }
 }
 ?>
+</div>
+</div>
+</div>
+</body>
+</html>

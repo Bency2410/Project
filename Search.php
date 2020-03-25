@@ -7,7 +7,6 @@
     <title>Search</title>
 </head>
 <body>
-<form method="POST">
 <nav class="navbar navbar-expand-sm bg-info navbar-dark">
   <ul class="navbar-nav">
     <li class="nav-item active">
@@ -20,10 +19,14 @@
     <a class="nav-link" href="viewall.php">View All</a>
     </li>
     <li class="nav-item active">
-    <a class="nav-link" href="login.php">Log out</a>
+    <a class="nav-link" href="logout.php">Log out</a>
     </li>
   </ul>
 </nav>
+<div class="container">
+<div class="row">
+<div class="col col-sm-12 col-md-12 ">
+<form method="POST">
 <table class="table" >
 <tr>
 <td>Name of book</td>
@@ -32,8 +35,7 @@
 </tr>
 </table>
 </form>
-</body>
-</html>
+
 
 <?php
 if (isset($_POST["sbtn"]))
@@ -109,3 +111,8 @@ while($row=$r->fetch_assoc())
     }
 }
 ?>
+</div>
+</div>
+</div>
+</body>
+</html>

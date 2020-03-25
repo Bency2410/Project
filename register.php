@@ -7,8 +7,11 @@
     <title>Document</title>
 </head>
 <body>
+<div class="container">
+<div class="row">
+<div class="col col-sm-12 col-md-12 ">
 <form method="POST">
-<table class="table" >
+<table class="table table-borderless" >
 <tr>
 <td>Name</td>
 <td><input type="text" class="form-control" name="name"></td>
@@ -43,10 +46,10 @@
 </tr>
 </table>
 </form>
-</body>
-</html>
+
 
 <?php
+session_start();
 if (isset($_POST["sbutton"]))
 {
     $name=$_POST["name"];
@@ -64,6 +67,16 @@ if (isset($_POST["sbutton"]))
 
     $connection=new mysqli($sname,$dbun,$dbpass,$dbn);
 
+    $checksql="SELECT * FROM `Registration` WHERE `email`='$em' OR `username`='$un'";
+     $cr=$connection->query($checksql);
+     if($cr->num_rows>0)
+     {
+      echo "<script> alert ('Username/e-mail already exists')</script>";
+
+     }
+
+    else
+    {
     $sql="INSERT INTO `Registration`(`name`, `gender`, `email`, `phoneno`, `username`, `password`, `confirmpwd`) 
     VALUES ('$name','$gd','$em',$pn,'$un','$pw','$cpw')";
 
@@ -71,7 +84,7 @@ $r=$connection->query($sql);
 
 if($r===TRUE)
 {
-   header("Location: http://localhost/Project/Book.php");
+   header("Location: login.php");
     exit;
 }
 else
@@ -79,3 +92,10 @@ else
     echo $connection->error;
 }
 }
+}
+?>
+</div>
+</div>
+</div>
+</body>
+</html>
